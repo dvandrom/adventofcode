@@ -77,6 +77,93 @@ print("The solution to 2024 Day {} Part 1 is {}".format(day,answer))
 
 
 
+####################
+# Functions part 2 #
+####################
+def fun_report_safe_with_damp(lis_report_line):
+    # Iterate over the report line, omitting 1 report level and checking for safety
+    l_report_safe=0
+    k_level_to_remove=None
+    for k in range(len(lis_report_line)):
+        if l_report_safe==0: #only do this if it is still necessary
+            #report_line with the k'th level removed 
+            report_line=lis_report_line[:k] + lis_report_line[(k + 1):]
+            #corresponding increments
+            report_incrs=fun_report_increments(report_line)
+            #now check the Safety
+            new_report_safe,_,_,_=fun_report_safe(report_incrs)
+            if new_report_safe==1:
+                l_report_safe=1
+                k_level_to_remove=k+1 #because k is an index starting at 0
+
+    return l_report_safe,k_level_to_remove
+
+def fun_str_kth(k):
+    "Use only on integer k >= 1."
+    if k==1:
+        str_kth = str(k)+"st"
+    elif k==2:
+        str_kth = str(k)+"nd"
+    elif k==3:
+        str_kth = str(k)+"rd"
+    else:
+        str_kth = str(k)+"th"
+    return(str_kth)
+
+################
+# Solve part 2 #
+################
+with open(INPUT_FILE, mode='r', encoding='utf-8') as file:
+    i=0
+    lis_l_report_safe=[] #list of 0/1 dep. on l_report_safe
+    for line in file:
+        i=i+1
+        lis_report_line=fun_report_as_list(line.strip())
+        lis_report_incr=fun_report_increments(lis_report_line)
+        l_report_safe,l_safe_increment_sizes,l_monotonous_incrs,str_monotony_type=fun_report_safe(lis_report_incr)
+        str_safe="Unsafe"
+        if l_report_safe==1:
+            str_safe="Safe"
+        str_incr="Increments exceed bounds"
+        if l_safe_increment_sizes==1:
+            str_incr="Increments within bounds"
+        # PART2 LOGIC
+        if l_report_safe==0:
+            #iterate over the report line, omitting 1 report level and checking for safety
+            l_report_safe,k_level_to_remove=fun_report_safe_with_damp(lis_report_line)
+            if l_report_safe==1:
+                str_level_to_remove = fun_str_kth(k_level_to_remove)
+        lis_l_report_safe.append(l_report_safe)
+        # DISPLAY
+        if i<10:
+            print("{} Report line:\t     {}".format(i,lis_report_line))
+            print("  Report increments: {}".format(lis_report_incr))
+            print("  The report levels are {}:\t {}\t{}".format(str_safe,str_monotony_type,str_incr))
+            if str_safe=="Unsafe" and l_report_safe==1:
+                print("  Report line made safe by removing {} level".format(str_level_to_remove))
+
+# Some checks
+len(lis_l_report_safe)
+Counter(lis_l_report_safe) #{1: 536, 0: 464}
+sum(lis_l_report_safe) #536
+
+# Solution to the puzzle
+answer = sum(lis_l_report_safe)
+print("The solution to 2024 Day {} Part 2 is {}".format(day,answer))
+
+
+
+######################
+# OBSOLETE FROM HERE #
+######################
+"""
+My first try of a solution tried to avoid iterating over the levels of each report.
+It tried to consider the patterns in level increments.
+However, counting the nr of breaches in pattern does not guarantee, if the nr is 1,
+that the resulting pattern when removing 1 element is conform to reactor safety.
+My first try forgot to re-test this.
+"""
+
 #################
 # Puzzle part 2 #
 #################
