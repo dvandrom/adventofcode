@@ -56,6 +56,11 @@ print("The solution to 2024 Day {} Part 1 is {}".format(day,result))
 # Puzzle part 2 #
 #################
 """
+There are two new instructions you'll need to handle:
+- The do() instruction enables future mul instructions.
+- The don't() instruction disables future mul instructions.
+Only the most recent do() or don't() instruction applies.
+At the beginning of the program, mul instructions are enabled.
 """
 
 ####################
