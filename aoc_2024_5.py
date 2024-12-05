@@ -10,6 +10,11 @@ INPUT_FILE="/home/rsz-6139/PY/AdventOfCode/2024/aoc_2024_{}_input.txt".format(da
 # Puzzle part 1 #
 #################
 """
+New pages for the safety manuals must be printed in a very specific order.
+The notation X|Y means that if both page number X and page number Y are to be produced as part of an update, page number X must be printed at some point before page number Y.
+The Elf has for you both the page ordering rules and the pages to produce in each update (your puzzle input).
+Not all updates are in the correct order.
+Determine which updates are already in the correct order. What do you get if you add up the middle page number from those correctly-ordered updates?
 """
 
 ####################
@@ -75,12 +80,13 @@ print("The solution to 2024 Day {} Part 1 is {}".format(day,answer))
 # Puzzle part 2 #
 #################
 """
+For each of the incorrectly-ordered updates, use the page ordering rules to put the page numbers in the right order.
+What do you get if you add up the middle page numbers after correctly ordering just those updates?
 """
 
 ####################
 # Functions part 2 #
 ####################
-
 
 
 ################
@@ -98,7 +104,7 @@ updates = input[1].splitlines()
 #len(rules)+len(updates)+1 #1374 OK = number of lines in INPUT_FILE
 
 sum_middle_pages=0
-i=0
+i=0 #for inspection purposes
 for update_line in updates:
     #check whether all pages in the update_line adhere to all rules, if so sum middle page
     #--> do this by going over all rules X|Y and checking whether regexp(X-before-Y) holds for the update_line
@@ -137,7 +143,7 @@ for update_line in updates:
         middle_page = lst_reordered_update_line[len(lst_reordered_update_line)//2]
         sum_middle_pages += int(middle_page)
 
-        #
+        #inspection purposes
         if i<10:
             print(i)
             print("wrong order pages example:")
@@ -155,7 +161,7 @@ for update_line in updates:
             print(middle_page)
 
     # Check for adherence now
-
+    #unnecessary, it will always be true at this point
 
 answer = sum_middle_pages
 
