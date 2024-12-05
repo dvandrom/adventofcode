@@ -86,7 +86,9 @@ print("The solution to 2024 Day {} Part 1 is {}".format(day,answer))
 ################
 # Solve part 2 #
 ################
-input = open(INPUT_FILE,'r').read().split("\n\n")
+input_file = INPUT_FILE
+#input_file = "/home/rsz-6139/PY/AdventOfCode/2024/0_test.txt".format(day)
+input = open(input_file,'r').read().split("\n\n")
 #len(input) #2 OK
 
 rules = input[0].splitlines()
@@ -119,8 +121,10 @@ for update_line in updates:
             all_index_Y = [i for i,n in enumerate(lst_update_line) if n in all_rules_Y]
             low_index_Y = all_index_Y[0]
             #put X1 just in front of lowest index Y (in lst_update_line) 
-            index_X1 = lst_update_line.index(X1) #first index of X1 in list (will be > low_index_Y)
-            lst_update_line = lst_update_line[:low_index_Y]+[lst_update_line[index_X1]]+lst_update_line[low_index_Y:index_X1]+lst_update_line[index_X1+1:]
+            index_X1 = lst_update_line.index(X1) #first index of X1 in list
+            #NOTE that reordering is only necessary IF index_X1 > low_index_Y
+            if index_X1 > low_index_Y:
+                lst_update_line = lst_update_line[:low_index_Y]+[lst_update_line[index_X1]]+lst_update_line[low_index_Y:index_X1]+lst_update_line[index_X1+1:]
             #remove rules X1|Y from relevant rules (now adhered to)
             loop_rules = [loop_rule for loop_rule in loop_rules if loop_rule not in all_rules_X1]
             #NOTE that all(X_precedes_Y_in_Z(rule,update_line) for rule in []) returns True when loop_rules is empty
@@ -165,4 +169,9 @@ print("The solution to 2024 Day {} Part 2 is {}".format(day,answer))
 # Development       #
 # Edge case testing #
 #####################
-
+a=['75', '97', '47', '61', '53']
+loop_rules=['47|53', '97|61', '97|47', '75|53', '61|53', '97|53', '75|47', '97|75', '47|61', '75|61']
+index_X1=2
+low_index_Y=3
+#NOTE that reordering is only necessary IF index_X1 > low_index_Y
+print(a[:low_index_Y]+[a[index_X1]]+a[low_index_Y:index_X1]+a[index_X1+1:]) #unnecessary reordering!
