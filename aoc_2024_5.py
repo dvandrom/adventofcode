@@ -4,7 +4,7 @@ import re
 # Input #
 #########
 day=5
-INPUT_FILE="/home/rsz-6139/PY/AdventOfCode/2024/aoc_2024_{}_input.txt".format(day)
+INPUT_FILE="/home/userName/PY/AdventOfCode/2024/aoc_2024_{}_input.txt".format(day)
 
 #################
 # Puzzle part 1 #
